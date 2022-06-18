@@ -21,6 +21,7 @@ jobs:
           # Defaults to the user or organization that owns the workflow file
           scope: "@ftdigital"
       - run: yarn install --frozen-lockfile
+      - run: yarn build
       - run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
