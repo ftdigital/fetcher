@@ -1,0 +1,47 @@
+{
+  "name": "@ftdigital/fetcher",
+  "version": "1.0.0",
+  "description": "",
+  "author": "FT Digital",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ftdigital/fetcher.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ftdigital/fetcher/issues"
+  },
+  "license": "MIT",
+  "main": "./dist/fetcher.umd.js",
+  "module": "./dist/fetcher.es.js",
+  "typings": "./dist/index.d.ts",
+  "sideEffects": false,
+  "private": false,
+  "files": [
+    "package.json",
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/fetcher.es.js",
+      "require": "./dist/fetcher.umd.js"
+    }
+  },
+  "scripts": {
+    "build": "vite build"
+  },
+  "size-limit": [
+    {
+      "path": "dist/fetcher.es.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/fetcher.umd.js",
+      "limit": "10 KB"
+    }
+  ],
+  "devDependencies": {
+    "typescript": "^4.7.4",
+    "vite": "^2.9.12",
+    "vite-plugin-dts": "^1.2.0"
+  }
+}

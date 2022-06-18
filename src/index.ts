@@ -1,0 +1,1 @@
+export { createFetcherInstance } from "./FetcherInstance";
