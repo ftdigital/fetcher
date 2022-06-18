@@ -1,1 +1,1 @@
-export { createFetcherInstance } from "./FetcherInstance";
+export * from "./FetcherInstance";
