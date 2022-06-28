@@ -17,10 +17,12 @@ export class Fetcher {
     let url = request.url;
 
     if (this.options?.searchParams) {
-      url = url.replace(
+      const textUrl = url.replace(
         /(?:\?.*?)?(?=#|$)/,
         this.options.searchParams.toString()
       );
+
+      url = "?" + textUrl;
     }
 
     if (this.options.prefixUrl) {
