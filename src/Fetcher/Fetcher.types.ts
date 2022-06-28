@@ -5,5 +5,5 @@ export interface FetcherOptions {
   headers?: HeadersInit;
   searchParams?: URLSearchParams;
   method?: HttpMethod;
-  body?: string;
+  body?: BodyInit | null | undefined;
 }
