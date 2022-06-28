@@ -16,17 +16,15 @@ export class Fetcher {
 
     let url = request.url;
 
-    if (this.options?.searchParams) {
-      const textUrl = url.replace(
-        /(?:\?.*?)?(?=#|$)/,
-        this.options.searchParams.toString()
-      );
-
-      url = "?" + textUrl;
+    if (this.options.prefixUrl) {
+      url = this.options.prefixUrl + "/" + this.requestInfo.toString();
     }
 
-    if (this.options.prefixUrl) {
-      url = this.options.prefixUrl + "/" + url;
+    if (this.options?.searchParams) {
+      url = url.replace(
+        /(?:\?.*?)?(?=#|$)/,
+        "?" + this.options.searchParams.toString()
+      );
     }
 
     const responsePromise = fetch(url, {
