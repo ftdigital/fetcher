@@ -1,6 +1,6 @@
 {
   "name": "@ftdigital/fetcher",
-  "version": "1.0.1",
+  "version": "0.0.1",
   "description": "",
   "author": "FT Digital",
   "repository": {
@@ -42,6 +42,7 @@
   "devDependencies": {
     "typescript": "^4.7.4",
     "vite": "^2.9.12",
-    "vite-plugin-dts": "^1.2.0"
+    "vite-plugin-dts": "^1.2.0",
+    "vite-tsconfig-paths": "^3.5.0"
   }
 }

@@ -22,7 +22,12 @@
     "useDefineForClassFields": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "paths": {
+      "@classes/*": ["./classes/*"],
+      "@helpers/*": ["./helpers/*"],
+      "@types": ["./types"]
+    }
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

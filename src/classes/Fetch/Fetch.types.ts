@@ -1,6 +1,6 @@
-import { HttpMethod } from "../types";
+import { HttpMethod } from "@types";
 
-export interface FetcherOptions {
+export interface FetchOptions {
   prefixUrl?: string;
   headers?: HeadersInit;
   searchParams?: URLSearchParams;

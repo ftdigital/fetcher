@@ -1,6 +1,7 @@
 import path from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   build: {
@@ -10,5 +11,12 @@ export default defineConfig({
       fileName: (format) => `fetcher.${format}.js`,
     },
   },
-  plugins: [dts()],
+  resolve: {
+    alias: {
+      "@classes": path.resolve(__dirname, "./src/classes"),
+      "@helpers": path.resolve(__dirname, "./src/helpers"),
+      "@types": path.resolve(__dirname, "./src/types"),
+    },
+  },
+  plugins: [dts(), tsconfigPaths()],
 });

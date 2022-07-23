@@ -1,1 +1,1 @@
-export * from "./FetcherInstance";
+export * from "./helpers/createFetcher";

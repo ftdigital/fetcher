@@ -1,12 +1,12 @@
-import { ResponsePromise } from "../types";
+import { ResponsePromise } from "@types";
 import { HTTPError } from "../HTTPError";
-import { FetcherOptions } from "./Fetcher.types";
+import { FetchOptions } from "./Fetch.types";
 
-export class Fetcher {
+export class Fetch {
   requestInfo: RequestInfo;
-  options: FetcherOptions;
+  options: FetchOptions;
 
-  constructor(requestInfo: RequestInfo, options?: FetcherOptions) {
+  constructor(requestInfo: RequestInfo, options?: FetchOptions) {
     this.requestInfo = requestInfo;
     this.options = options ?? {};
   }
@@ -45,11 +45,11 @@ export class Fetcher {
     });
   }
 
-  public static create(requestInfo: RequestInfo, options?: FetcherOptions) {
-    return new Fetcher(requestInfo, options).createResponsePromise();
+  public static create(requestInfo: RequestInfo, options?: FetchOptions) {
+    return new Fetch(requestInfo, options).createResponsePromise();
   }
 
-  public extend(options?: FetcherOptions) {
-    return new Fetcher(this.requestInfo, { ...this.options, ...options });
+  public extend(options?: FetchOptions) {
+    return new Fetch(this.requestInfo, { ...this.options, ...options });
   }
 }
