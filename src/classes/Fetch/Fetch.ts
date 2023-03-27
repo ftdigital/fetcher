@@ -27,13 +27,24 @@ export class Fetch {
       );
     }
 
+    if (this.options.hooks?.beforeRequest) {
+      this.options.hooks?.beforeRequest.forEach((callback) =>
+        callback(request)
+      );
+    }
+
+    // add trailing slash to url if it's missing
+    url = url.replace(/(^[^\?]*\w$)/, "$1/");
+
     const responsePromise = fetch(url, {
       headers: this.options.headers,
       method: this.options.method,
       body: this.options.body,
+      redirect: this.options.redirect,
     });
 
-    return Object.assign(responsePromise, {
+    return {
+      ...responsePromise,
       json: () =>
         responsePromise.then((response) => {
           if (!response.ok) {
@@ -42,7 +53,7 @@ export class Fetch {
 
           return response.json();
         }),
-    });
+    };
   }
 
   public static create(requestInfo: RequestInfo, options?: FetchOptions) {

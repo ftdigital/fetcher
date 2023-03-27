@@ -2,7 +2,7 @@ import { Fetch, FetchOptions } from "@classes/Fetch";
 import { HttpMethod, ResponsePromise } from "@types";
 import { Fetcher } from "./createFetcher.types";
 
-const requestMethods: HttpMethod[] = [
+const REQUEST_METHODS: HttpMethod[] = [
   "GET",
   "POST",
   "PUT",
@@ -19,7 +19,7 @@ export function createFetcher(defaults?: FetchOptions) {
     createFetcher({ ...defaults, ...newDefaults });
 
   const methods = Object.fromEntries(
-    requestMethods.map((method) => [
+    REQUEST_METHODS.map((method) => [
       method.toLowerCase() as any,
       (requestInfo: RequestInfo, options?: FetchOptions) =>
         Fetch.create(requestInfo, {
