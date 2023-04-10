@@ -16,31 +16,25 @@ export class Fetch {
 
     let url = request.url;
 
-    if (this.options.prefixUrl) {
+    const { prefixUrl, searchParams, hooks, ...restOptions } = this.options;
+
+    if (prefixUrl) {
       url = this.options.prefixUrl + "/" + this.requestInfo.toString();
     }
 
-    if (this.options?.searchParams) {
-      url = url.replace(
-        /(?:\?.*?)?(?=#|$)/,
-        "?" + this.options.searchParams.toString()
-      );
+    if (searchParams) {
+      url = url.replace(/(?:\?.*?)?(?=#|$)/, "?" + searchParams.toString());
     }
 
-    if (this.options.hooks?.beforeRequest) {
-      this.options.hooks?.beforeRequest.forEach((callback) =>
-        callback(request)
-      );
+    if (hooks?.beforeRequest) {
+      hooks?.beforeRequest.forEach((callback) => callback(request));
     }
 
     // add trailing slash to url if it's missing
     url = url.replace(/(^[^\?]*\w$)/, "$1/");
 
     const responsePromise = fetch(url, {
-      headers: this.options.headers,
-      method: this.options.method,
-      body: this.options.body,
-      redirect: this.options.redirect,
+      ...restOptions,
     });
 
     return {
