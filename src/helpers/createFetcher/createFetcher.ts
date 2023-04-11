@@ -1,15 +1,7 @@
 import { Fetch, FetchOptions } from "@classes/Fetch";
 import { HttpMethod, ResponsePromise } from "@types";
 import { Fetcher } from "./createFetcher.types";
-
-const REQUEST_METHODS: HttpMethod[] = [
-  "GET",
-  "POST",
-  "PUT",
-  "PATCH",
-  "HEAD",
-  "DELETE",
-];
+import { REQUEST_METHODS } from "@constants";
 
 export function createFetcher(defaults?: FetchOptions) {
   const create = (newDefaults: FetchOptions) =>

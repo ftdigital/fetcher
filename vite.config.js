@@ -16,6 +16,7 @@ export default defineConfig({
       "@classes": path.resolve(__dirname, "./src/classes"),
       "@helpers": path.resolve(__dirname, "./src/helpers"),
       "@types": path.resolve(__dirname, "./src/types"),
+      "@constants": path.resolve(__dirname, "./src/constants"),
     },
   },
   plugins: [dts(), tsconfigPaths()],

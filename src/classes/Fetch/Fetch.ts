@@ -1,52 +1,85 @@
 import { ResponsePromise } from "@types";
 import { HTTPError } from "../HTTPError";
-import { FetchOptions } from "./Fetch.types";
+import { FetchOptions, Input } from "./Fetch.types";
 
 export class Fetch {
-  requestInfo: RequestInfo;
-  options: FetchOptions;
+  input: Input;
+  options: FetchOptions = { throwHttpErrors: true };
+  request: Request;
 
-  constructor(requestInfo: RequestInfo, options?: FetchOptions) {
-    this.requestInfo = requestInfo;
-    this.options = options ?? {};
+  constructor(input: Input, options?: FetchOptions) {
+    this.input = input;
+    this.options = { ...this.options, ...options };
+
+    this.request = new globalThis.Request(this.input, this.options);
+  }
+
+  private async fetch(): Promise<Response> {
+    for (const hook of this.options.hooks?.beforeRequest ?? []) {
+      const result = hook(this.request, this.options);
+
+      if (result instanceof Request) {
+        this.request = result;
+        break;
+      }
+
+      if (result instanceof Response) {
+        return result;
+      }
+    }
+
+    return fetch(this.request.clone(), this.options);
   }
 
   private createResponsePromise(): ResponsePromise {
-    const request = new Request(this.requestInfo);
+    let url = this.request.url;
 
-    let url = request.url;
-
-    const { prefixUrl, searchParams, hooks, ...restOptions } = this.options;
+    const { prefixUrl, searchParams, hooks } = this.options;
 
     if (prefixUrl) {
-      url = this.options.prefixUrl + "/" + this.requestInfo.toString();
+      url = this.options.prefixUrl + "/" + this.input.toString();
     }
 
     if (searchParams) {
       url = url.replace(/(?:\?.*?)?(?=#|$)/, "?" + searchParams.toString());
     }
 
-    if (hooks?.beforeRequest) {
-      hooks?.beforeRequest.forEach((callback) => callback(request));
-    }
-
     // add trailing slash to url if it's missing
     url = url.replace(/(^[^\?]*\w$)/, "$1/");
 
-    const responsePromise = fetch(url, {
-      ...restOptions,
-    });
+    const responsePromise = this.fetch();
+
+    const fetchFn = async () => {
+      let response = await responsePromise;
+
+      for (const hook of hooks?.afterResponse ?? []) {
+        const modifiedResponse = await hook(
+          this.request,
+          this.options,
+          response
+        );
+
+        if (modifiedResponse instanceof globalThis.Response) {
+          response = modifiedResponse;
+        }
+      }
+
+      if (!response.ok && this.options.throwHttpErrors) {
+        let error = new HTTPError(response, this.request);
+
+        for (const hook of hooks?.beforeError ?? []) {
+          error = await hook(error);
+        }
+
+        throw error;
+      }
+
+      return response.json();
+    };
 
     return {
       ...responsePromise,
-      json: () =>
-        responsePromise.then((response) => {
-          if (!response.ok) {
-            throw new HTTPError(response, request);
-          }
-
-          return response.json();
-        }),
+      json: fetchFn,
     };
   }
 
@@ -55,6 +88,6 @@ export class Fetch {
   }
 
   public extend(options?: FetchOptions) {
-    return new Fetch(this.requestInfo, { ...this.options, ...options });
+    return new Fetch(this.input, { ...this.options, ...options });
   }
 }
