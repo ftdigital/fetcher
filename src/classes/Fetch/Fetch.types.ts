@@ -18,17 +18,25 @@ export type AfterResponseHook = (
   response: Response
 ) => Response | void | Promise<Response | void>;
 
+interface Hooks {
+  beforeRequest?: BeforeRequestHook[];
+  beforeRetry?: BeforeRetryHook[];
+  beforeError?: BeforeErrorHook[];
+  afterResponse?: AfterResponseHook[];
+}
 export interface FetchOptions extends RequestInit {
   prefixUrl?: string;
   searchParams?: URLSearchParams;
   method?: HttpMethod;
   throwHttpErrors?: boolean;
-  hooks?: {
-    beforeRequest?: BeforeRequestHook[];
-    beforeRetry?: BeforeRetryHook[];
-    beforeError?: BeforeErrorHook[];
-    afterResponse?: AfterResponseHook[];
-  };
+  fetch?: (
+    input: URL | RequestInfo,
+    init?: RequestInit | undefined
+  ) => Promise<Response>;
+  hooks?: Hooks;
 }
+
+export type InternalFetchOptions = Omit<FetchOptions, "prefixUrl"> &
+  Required<Pick<FetchOptions, "prefixUrl">>;
 
 export type Input = string | URL | Request;

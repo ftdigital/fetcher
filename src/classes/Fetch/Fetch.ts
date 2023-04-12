@@ -1,15 +1,20 @@
 import { ResponsePromise } from "@types";
 import { HTTPError } from "../HTTPError";
-import { FetchOptions, Input } from "./Fetch.types";
+import { FetchOptions, Input, InternalFetchOptions } from "./Fetch.types";
 
 export class Fetch {
   input: Input;
-  options: FetchOptions = { throwHttpErrors: true };
+  options: InternalFetchOptions;
   request: Request;
 
   constructor(input: Input, options?: FetchOptions) {
     this.input = input;
-    this.options = { ...this.options, ...options };
+
+    this.options = {
+      prefixUrl: String(options?.prefixUrl ?? ""),
+      throwHttpErrors: true,
+      ...options,
+    };
 
     this.request = new globalThis.Request(this.input, this.options);
   }
@@ -49,7 +54,7 @@ export class Fetch {
 
     const responsePromise = this.fetch();
 
-    const fetchFn = async () => {
+    const fetchFn = async <T extends unknown>(): Promise<T> => {
       let response = await responsePromise;
 
       for (const hook of hooks?.afterResponse ?? []) {
