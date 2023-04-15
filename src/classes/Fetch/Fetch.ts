@@ -16,6 +16,29 @@ export class Fetch {
       ...options,
     };
 
+    if (this.options.prefixUrl && typeof this.input === "string") {
+      if (this.input.startsWith("/")) {
+        throw new Error(
+          "`input` must not begin with a slash when using `prefixUrl`"
+        );
+      }
+
+      if (!this.options.prefixUrl.endsWith("/")) {
+        this.options.prefixUrl += "/";
+      }
+
+      this.input = this.options.prefixUrl + this.input;
+    }
+
+    if (this.options.searchParams) {
+      this.input = this.input
+        .toString()
+        .replace(
+          /(?:\?.*?)?(?=#|$)/,
+          "?" + this.options.searchParams.toString()
+        );
+    }
+
     this.request = new globalThis.Request(this.input, this.options);
   }
 
@@ -37,20 +60,7 @@ export class Fetch {
   }
 
   private createResponsePromise(): ResponsePromise {
-    let url = this.request.url;
-
-    const { prefixUrl, searchParams, hooks } = this.options;
-
-    if (prefixUrl) {
-      url = this.options.prefixUrl + "/" + this.input.toString();
-    }
-
-    if (searchParams) {
-      url = url.replace(/(?:\?.*?)?(?=#|$)/, "?" + searchParams.toString());
-    }
-
-    // add trailing slash to url if it's missing
-    url = url.replace(/(^[^\?]*\w$)/, "$1/");
+    const { hooks } = this.options;
 
     const responsePromise = this.fetch();
 
