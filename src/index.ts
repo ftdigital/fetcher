@@ -1,4 +1,8 @@
-import { createFetcher } from "./helpers/createFetcher";
-
 export * from "./helpers/createFetcher";
+export type {
+  AfterResponseHook,
+  BeforeErrorHook,
+  BeforeRequestHook,
+  FetchOptions,
+} from "./classes/Fetch";
 export { HTTPError } from "./classes/HTTPError";

@@ -1,2 +1,7 @@
 export { Fetch } from "./Fetch";
-export type { FetchOptions } from "./Fetch.types";
+export type {
+  FetchOptions,
+  AfterResponseHook,
+  BeforeErrorHook,
+  BeforeRequestHook,
+} from "./Fetch.types";
