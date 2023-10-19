@@ -14,6 +14,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@classes": path.resolve(__dirname, "./src/classes"),
+      "@utils": path.resolve(__dirname, "./src/utils"),
       "@helpers": path.resolve(__dirname, "./src/helpers"),
       "@types": path.resolve(__dirname, "./src/types"),
       "@constants": path.resolve(__dirname, "./src/constants"),

@@ -25,6 +25,7 @@
     "baseUrl": "./src",
     "paths": {
       "@classes/*": ["./classes/*"],
+      "@utils/*": ["./utils/*"],
       "@helpers/*": ["./helpers/*"],
       "@types": ["./types"],
       "@constants": ["./constants"]

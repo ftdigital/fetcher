@@ -1,4 +1,5 @@
 import { ResponsePromise } from "@types";
+import { mergeHeaders } from "@utils/mergeHeaders";
 import { HTTPError } from "../HTTPError";
 import { FetchOptions, Input, InternalFetchOptions } from "./Fetch.types";
 
@@ -56,7 +57,12 @@ export class Fetch {
       }
     }
 
-    return fetch(this.request.clone(), this.options);
+    const options: InternalFetchOptions = {
+      ...this.options,
+      headers: mergeHeaders(this.options.headers, this.request.headers),
+    };
+
+    return fetch(this.request.clone(), options);
   }
 
   private createResponsePromise(): ResponsePromise {
