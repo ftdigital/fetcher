@@ -48,7 +48,7 @@ export class Fetch {
       const result = hook(this.request, this.options);
 
       if (result instanceof Request) {
-        this.request = result;
+        this.request = new globalThis.Request(result, this.options);
         break;
       }
 

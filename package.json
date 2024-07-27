@@ -1,6 +1,6 @@
 {
   "name": "@ftdigital/fetcher",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "",
   "author": "FT Digital",
   "repository": {
@@ -23,6 +23,7 @@
   "exports": {
     ".": {
       "import": "./dist/fetcher.es.js",
+      "types": "./dist/index.d.ts",
       "require": "./dist/fetcher.umd.js"
     }
   },
