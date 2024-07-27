@@ -2,6 +2,7 @@ import { ResponsePromise } from "@types";
 import { mergeHeaders } from "@utils/mergeHeaders";
 import { HTTPError } from "../HTTPError";
 import { FetchOptions, Input, InternalFetchOptions } from "./Fetch.types";
+import { mergeOptions } from "@utils/mergeOptions";
 
 export class Fetch {
   input: Input;
@@ -15,7 +16,6 @@ export class Fetch {
       prefixUrl: String(options?.prefixUrl ?? ""),
       throwHttpErrors: true,
       ...options,
-      searchParams: new URLSearchParams(options?.searchParams),
     };
 
     if (this.options.prefixUrl && typeof this.input === "string") {
@@ -110,6 +110,6 @@ export class Fetch {
   }
 
   public extend(options?: FetchOptions) {
-    return new Fetch(this.input, { ...this.options, ...options });
+    return new Fetch(this.input, mergeOptions(this.options, options));
   }
 }
