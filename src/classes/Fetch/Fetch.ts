@@ -15,6 +15,7 @@ export class Fetch {
       prefixUrl: String(options?.prefixUrl ?? ""),
       throwHttpErrors: true,
       ...options,
+      searchParams: new URLSearchParams(options?.searchParams),
     };
 
     if (this.options.prefixUrl && typeof this.input === "string") {
