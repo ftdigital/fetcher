@@ -21,6 +21,9 @@
     "package.json",
     "dist"
   ],
+  "engines": {
+    "node": "^18.20.2 || >=20.9.0"
+  },
   "exports": {
     ".": {
       "import": "./dist/fetcher.es.js",
